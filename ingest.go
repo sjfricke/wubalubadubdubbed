@@ -1,23 +1,22 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/sjfricke/wubalubadubdub/ingestion"
 	"os"
 	"sync"
+	"github.com/sjfricke/wubalubadubdub/database"
 )
 
 func main() {
 	w := ingestion.GetWatson()
+	db := database.ConnectCockroach("postgresql://root@localhost:26257?sslmode=disable");
 	var wg sync.WaitGroup
 	wg.Add(len(os.Args) - 1)
 	for _, file := range os.Args[1:] {
 		go func(f string) {
 			defer wg.Done()
-			tt := ingestion.GetWordLocations(w, f)
-			for _, w := range tt.Words {
-				fmt.Printf("%v%v\n", f, w)
-			}
+			ingestion.ParseAndAdd(w, f, db)
 		}(file)
 	}
 
