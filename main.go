@@ -3,44 +3,27 @@ package main
 import (
 	"github.com/sjfricke/wubalubadubdub/database"
 //	"github.com/sjfricke/wubalubadubdub/encoding"
-	"time"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	// "time"
+	"io/ioutil"
+	"github.com/fatih/set"
 )
 
 func main() {
+	db := database.ConnectCockroach("postgresql://root@localhost:26257?sslmode=disable")
 
-	db := database.ConnectCockroach("postgresql://root@FrickeFresh-Linux:26257?sslmode=disable");
+	router := gin.Default()
 
-	// 2.418 seconds
-	start := time.Date(2009, time.November, 10, 0, 0, 2, 418000, time.UTC)
-	// 0.453
-	end := time.Date(2009, time.November, 10, 0, 0, 0, 453000, time.UTC)
-	next := time.Date(2009, time.November, 10, 0, 0, 0, 719000, time.UTC)
+	router.POST("/", func(c *gin.Context) {
+		bytes, _ := ioutil.ReadAll(c.Request.Body)
+		text := string(bytes)
+		words = strings.Split(strings.ToLower(text), " ")
+		for _, w := range words {
 
-	entry := database.PhraseEntry{
-		Phrase: "hey rick",
-		File: "/home/fricke/Videos/rm1.mp4",
-		Start: start,
-		End: end,
-		Next: next,}
+		}
+		c.JSON(http.StatusOK, gin.H{"text": "beep boop"})
+	})
 
-	database.CreatePhrase(db, entry)
-
-	// 2nd entry
-
-	// 2.418 seconds
-	start = time.Date(2009, time.November, 10, 0, 0, 6, 910000, time.UTC)
-	// 0.453
-	end = time.Date(2009, time.November, 10, 0, 0, 0, 526000, time.UTC)
-	next = time.Date(2009, time.November, 10, 0, 0, 0, 598000, time.UTC)
-
-	entry = database.PhraseEntry{
-		Phrase: "whatever",
-		File: "/home/fricke/Videos/rm1.mp4",
-		Start: start,
-		End: end,
-		Next: next,}
-
-	database.CreatePhrase(db, entry)
-
-//	encoding.Crop("/home/fricke/Videos/rm1.mp4", "/home/fricke/Videos/test.mp4", start, end);
+	router.Run(":8000") // listen and serve on 0.0.0.0:8080
 }
