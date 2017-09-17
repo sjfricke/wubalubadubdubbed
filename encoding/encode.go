@@ -18,13 +18,13 @@ func timeDiff(start time.Time, end time.Time) time.Time {
 }
 
 // Encode takes slice of parsed entries and makes a single video
-func Encode(entries []database.PhraseEntry) {
+func Encode(entries []database.PhraseEntry) string {
 	ePath := filepath.Join(".", strconv.FormatInt(time.Now().Unix(), 10));
 	os.MkdirAll(ePath, os.ModePerm)
 
 	var cFiles []string
 	var cPath string
-	
+
 	for i := 0; i < len(entries); i++ {
 		// if we have two words on one entry
 		if entries[i].Phrase == "" {
@@ -33,12 +33,13 @@ func Encode(entries []database.PhraseEntry) {
 
 		cPath = fmt.Sprintf("./%s/%s",ePath, fmt.Sprintf("%d.mp4", i))
 		cFiles = append(cFiles, cPath)
-		
+
 		Crop(entries[i].File,
 			cPath,
 			entries[i].Start,
 			timeDiff(entries[i].Start, entries[i].Next))
 	}
 
-	Stitch(cFiles, filepath.Join(ePath, "output.mp4"))	
+	Stitch(cFiles, filepath.Join(ePath, "output.mp4"))
+	return ePath
 }

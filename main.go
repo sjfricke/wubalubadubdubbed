@@ -9,6 +9,8 @@ import (
 	"github.com/fatih/set"
 //	"fmt"
 	"strings"
+	"os/exec"
+	"path/filepath"
 )
 
 type PostData struct {
@@ -26,14 +28,14 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"TEST":"Delete This"})
 	})
-	
+
 	router.POST("/", func(c *gin.Context) {
 		var json PostData
 		var extra int = 0
 		
 		if c.BindJSON(&json) != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "the post body so please add it :)"})
-		}		
+		}
 		if json.Data == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "The data key of the post body"})
 		}
@@ -53,8 +55,15 @@ func main() {
 			}			
 		}
 		if(missing.IsEmpty()) {
-			encoding.Encode(phraseEntries)
-			c.JSON(http.StatusOK, gin.H{"text": "beep boop"})
+			dir := encoding.Encode(phraseEntries)
+			fmt.Println(dir)
+			orig := filepath.Join(dir, "output.mp4")
+			fmt.Println(orig)
+			out := filepath.Join("public", strings.Join([]string{dir, "mp4"}, "."))
+			fmt.Println(out)
+			exec.Command("mv", orig, out).Run()
+			exec.Command("rm", "-r", dir).Run()
+			c.JSON(http.StatusOK, gin.H{"url": fmt.Sprintf("http://wubalubadubdubbed.com/%s", out)})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"missing": missing.List()})
 		}		
