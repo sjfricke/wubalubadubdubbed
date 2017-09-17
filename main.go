@@ -7,7 +7,7 @@ import (
 	"net/http"
 	// "time"
 	"github.com/fatih/set"
-//	"fmt"
+	"fmt"
 	"strings"
 	"os/exec"
 	"path/filepath"
@@ -32,7 +32,7 @@ func main() {
 	router.POST("/", func(c *gin.Context) {
 		var json PostData
 		var extra int = 0
-		
+
 		if c.BindJSON(&json) != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "the post body so please add it :)"})
 		}
@@ -52,7 +52,7 @@ func main() {
 
 			if extra > 1 {
 				i = i + (extra-1)
-			}			
+			}
 		}
 		if(missing.IsEmpty()) {
 			dir := encoding.Encode(phraseEntries)
@@ -66,7 +66,7 @@ func main() {
 			c.JSON(http.StatusOK, gin.H{"url": fmt.Sprintf("http://wubalubadubdubbed.com/%s", out)})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"missing": missing.List()})
-		}		
+		}
 	})
 
 	router.Static("/public", "public")
