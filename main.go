@@ -7,7 +7,7 @@ import (
 	"net/http"
 	// "time"
 	"github.com/fatih/set"
-	"fmt"
+//	"fmt"
 	"strings"
 )
 
@@ -24,11 +24,13 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOk, gin.H{"TEST":"Delete This"})
+		c.JSON(http.StatusOK, gin.H{"TEST":"Delete This"})
 	})
 	
 	router.POST("/", func(c *gin.Context) {
 		var json PostData
+		var extra int = 0
+		
 		if c.BindJSON(&json) != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "the post body so please add it :)"})
 		}		
@@ -36,23 +38,26 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "The data key of the post body"})
 		}
 		text := string(json.Data)
-		fmt.Printf("DEBUG: %s", text)
 		words := strings.Split(strings.ToLower(text), " ")
 		phraseEntries := make([]database.PhraseEntry, len(words))
 		missing := set.New()
-		for i, w := range words {
-			phraseEntries[i] = database.ReadPhrase(db, w)
-			if(phraseEntries[i].Phrase == "") {
+		for i := 0; i < len(words); i++ {
+			phraseEntries[i], extra = database.ReadPhrase(db, words[i:]... )
+			if phraseEntries[i].Phrase == "" {
 				// phrase not found
-				missing.Add(w)
+				missing.Add(words[i])
 			}
+
+			if extra > 1 {
+				i = i + (extra-1)
+			}			
 		}
 		if(missing.IsEmpty()) {
 			encoding.Encode(phraseEntries)
 			c.JSON(http.StatusOK, gin.H{"text": "beep boop"})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"missing": missing.List()})
-		}
+		}		
 	})
 
 	router.Static("/public", "public")

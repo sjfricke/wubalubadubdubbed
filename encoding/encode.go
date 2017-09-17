@@ -26,8 +26,12 @@ func Encode(entries []database.PhraseEntry) {
 	var cPath string
 	
 	for i := 0; i < len(entries); i++ {
+		// if we have two words on one entry
+		if entries[i].Phrase == "" {
+			continue
+		}
+
 		cPath = fmt.Sprintf("./%s/%s",ePath, fmt.Sprintf("%d.mp4", i))
-		fmt.Printf("DEBUG: cPath: %s\n", cPath);
 		cFiles = append(cFiles, cPath)
 		
 		Crop(entries[i].File,
