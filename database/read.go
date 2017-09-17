@@ -6,12 +6,12 @@ import (
 	"strings"
 //	"time"
 	"fmt"
-	
+
 	// Import postgres driver.
 	_ "github.com/lib/pq"
 )
 
-func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
+func ReadPhrase(db *sql.DB, phr string) *PhraseEntry {
 
 	rows, err := db.Query(fmt.Sprintf(`SELECT phrase, file, startPhrase, endPhrase, nextPhrase
                                            FROM wubalubadubdub.words
@@ -28,8 +28,8 @@ func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
 
 	// used to hold the longest phrase so we can get the word with longest pattern
 //	var lPhrase int = 0;
-	
-	defer rows.Close()	
+
+	defer rows.Close()
 	for rows.Next() {
 		if err = rows.Scan(&entry.Phrase, &entry.File, &entry.Start, &entry.End, &entry.Next); err != nil {
 			log.Println(err)
@@ -37,7 +37,7 @@ func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
 
 		// Currently just returning first foudn item
 		break
-		
+
 		// check if this row has longer span of words
 //		count := len(strings.Split(entry.Phrase, " "))
 //		if lPhrase < count {
@@ -52,5 +52,5 @@ func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
 
 	err = rows.Err() // get encountered errors
 
-	return entry
+	return &entry
 }
