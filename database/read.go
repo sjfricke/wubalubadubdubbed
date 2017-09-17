@@ -11,7 +11,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func ReadPhrase(db *sql.DB, phr string) *PhraseEntry {
+func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
 
 	rows, err := db.Query(fmt.Sprintf(`SELECT phrase, file, startPhrase, endPhrase, nextPhrase
                                            FROM wubalubadubdub.words
@@ -52,5 +52,5 @@ func ReadPhrase(db *sql.DB, phr string) *PhraseEntry {
 
 	err = rows.Err() // get encountered errors
 
-	return &entry
+	return entry
 }
