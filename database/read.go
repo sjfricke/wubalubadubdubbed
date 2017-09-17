@@ -24,10 +24,6 @@ func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
 
 	// hold a temp entry and return entry
 	entry := PhraseEntry{}
-//	rEntry := PhraseEntry{}
-
-	// used to hold the longest phrase so we can get the word with longest pattern
-//	var lPhrase int = 0;
 
 	defer rows.Close()
 	for rows.Next() {
@@ -37,17 +33,6 @@ func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
 
 		// Currently just returning first foudn item
 		break
-
-		// check if this row has longer span of words
-//		count := len(strings.Split(entry.Phrase, " "))
-//		if lPhrase < count {
-//			lPhrase = count
-//			rEntry.Phrase = entry.Phrase
-//			rEntry.File = entry.File
-//			rEntry.Start = entry.Start
-//			rEntry.End = entry.End
-//			rEntry.Next = entry.Next
-//		}
 	}
 
 	err = rows.Err() // get encountered errors

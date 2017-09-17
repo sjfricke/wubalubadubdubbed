@@ -6,11 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	// "time"
-	"io/ioutil"
 	"github.com/fatih/set"
-	// "fmt"
+	"fmt"
 	"strings"
 )
+
+type PostData struct {
+	Data     string `json:"data" binding:"required"`
+}
 
 // THIS CODE IS STILL BROKEN
 // Currently all databse file paths are toLower() and
@@ -21,8 +24,15 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/", func(c *gin.Context) {
-		bytes, _ := ioutil.ReadAll(c.Request.Body)
-		text := string(bytes)
+		var json PostData
+		if c.BindJSON(&json) != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "the post body so please add it :)"})
+		}		
+		if json.Data == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "The data key of the post body"})
+		}
+		text := string(json.Data)
+		fmt.Printf("DEBUG: %s", text)
 		words := strings.Split(strings.ToLower(text), " ")
 		phraseEntries := make([]database.PhraseEntry, len(words))
 		missing := set.New()
