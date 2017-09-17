@@ -23,6 +23,10 @@ func main() {
 
 	router := gin.Default()
 
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOk, gin.H{"TEST":"Delete This"})
+	})
+	
 	router.POST("/", func(c *gin.Context) {
 		var json PostData
 		if c.BindJSON(&json) != nil {

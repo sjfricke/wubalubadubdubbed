@@ -13,9 +13,13 @@ import (
 
 func ReadPhrase(db *sql.DB, phr string) PhraseEntry {
 
+	phr = strings.Replace(phr, ";", "", -1)
+	phr = strings.Replace(phr, "'", "", -1)
+	
 	rows, err := db.Query(fmt.Sprintf(`SELECT phrase, file, startPhrase, endPhrase, nextPhrase
                                            FROM wubalubadubdub.words
-                                           WHERE (phrase LIKE '%s');`,
+                                           WHERE (phrase LIKE '%s')
+                                           ORDER BY RANDOM() LIMIT 20;`,
                                            strings.ToLower(strings.TrimSpace(phr))))
 
 	if  err != nil {

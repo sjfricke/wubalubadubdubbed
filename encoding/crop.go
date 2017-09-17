@@ -10,9 +10,6 @@ func init() {
 
 func timeToString(t time.Time) string {
 	//TODO database code adding extra 1000 nano?
-//	nano = t.Nanosecond() / 1000
-//	if nano > 1000
-	
 	return fmt.Sprintf("%02d:%02d:%02d.%03d",
 		t.Hour(), t.Minute(), t.Second(), t.Nanosecond() / 1000000)
 }
