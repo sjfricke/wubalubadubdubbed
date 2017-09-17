@@ -4,14 +4,14 @@ import (
 	"database/sql"
 	"log"
 	"time"
-	
+
 	// Import postgres driver.
 	_ "github.com/lib/pq"
 )
 
 type PhraseEntry struct {
 	Phrase, File string
-	Start, End, Next time.Time
+	Previous, Start, End, Next time.Time
 }
 
 func ConnectCockroach(dbURL string) *sql.DB {
