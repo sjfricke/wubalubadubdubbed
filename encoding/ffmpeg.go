@@ -27,5 +27,6 @@ func Ffmpeg(args ...string) {
 
 	if err != nil {
 		fmt.Printf("Failed ffmpeg %s: %v\n", strings.Join(args, " "), err)
+		os.Exit(-1)
 	}
 }

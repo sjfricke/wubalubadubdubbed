@@ -12,6 +12,9 @@ import (
 	"strings"
 )
 
+// THIS CODE IS STILL BROKEN
+// Currently all databse file paths are toLower() and
+// causes file paths wit uppercase to fail ffmpeg part
 func main() {
 	db := database.ConnectCockroach("postgresql://root@localhost:26257?sslmode=disable")
 
