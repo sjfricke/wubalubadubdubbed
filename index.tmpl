@@ -11,7 +11,7 @@
 				e.preventDefault();  //prevent form from submitting
 				/* alert($("#wheep").val())*/
 				$.post( "/", JSON.stringify({data: $("#wheep").val()}), function ( res ){
-					alert(res)
+					location.reload()
 				}).fail(function (jqXHR) {
 					$("#bad").text("missing: " + $.parseJSON(jqXHR.responseText).missing.join(" "))
 				});

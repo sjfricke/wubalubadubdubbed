@@ -20,7 +20,7 @@ func ReadPhrase(db *sql.DB, phrases ...string) (PhraseEntry, int) {
 
 	rows, err := db.Query(fmt.Sprintf(`SELECT phrase, file, previousPhrase, startPhrase, endPhrase, nextPhrase
                                            FROM wubalubadubdub.words
-                                           WHERE (phrase LIKE '%s') AND (file LIKE '/home/fricke/videos/wubalubadubdub/s2e1.mp4')
+                                           WHERE (phrase LIKE '%s') AND (file LIKE '/home/fricke/videos/wubalubadubdub/s2%%')
                                            ORDER BY RANDOM() limit 15;`, // 15 to high or low?
 		strings.ToLower(strings.TrimSpace(phr))))
 

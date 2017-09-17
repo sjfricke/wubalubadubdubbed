@@ -28,7 +28,7 @@ type LastPost struct {
 func main() {
 	db := database.ConnectCockroach("postgresql://root@localhost:26257?sslmode=disable")
 
-	last := LastPost{ "/public/123.mp4", "what are you think to do with your time" }
+	last := LastPost{ "/public/123.mp4", "wubalubadubdub" }
 	
 	router := gin.Default()
 
