@@ -17,16 +17,25 @@ type PostData struct {
 	Data     string `json:"data" binding:"required"`
 }
 
+type LastPost struct {
+	URL string
+	Phrase string
+}
+
 // THIS CODE IS STILL BROKEN
 // Currently all databse file paths are toLower() and
 // causes file paths wit uppercase to fail ffmpeg part
 func main() {
 	db := database.ConnectCockroach("postgresql://root@localhost:26257?sslmode=disable")
 
+	last := LastPost{ "/public/123.mp4", "what are you think to do with your time" }
+	
 	router := gin.Default()
 
+	router.LoadHTMLFiles("index.tmpl")
+	
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"TEST":"Delete This"})
+		c.HTML(200, "index.tmpl", last)
 	})
 
 	router.POST("/", func(c *gin.Context) {
@@ -63,7 +72,9 @@ func main() {
 			fmt.Println(out)
 			exec.Command("mv", orig, out).Run()
 			exec.Command("rm", "-r", dir).Run()
-			c.JSON(http.StatusOK, gin.H{"url": fmt.Sprintf("http://wubalubadubdubbed.com/%s", out)})
+			last.URL = fmt.Sprintf("http://wubalubadubdubbed.com/%s", out)
+			last.Phrase = text;
+			c.JSON(http.StatusOK, gin.H{"url": last.URL})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"missing": missing.List()})
 		}
