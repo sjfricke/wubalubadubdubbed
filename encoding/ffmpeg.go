@@ -18,7 +18,7 @@ func init() {
 }
 
 // Ffmpeg is used to execute ffmpeg in shell
-func Ffmpeg(args ...string) {
+func Ffmpeg(args ...string) error{
 	cmd := exec.Command("ffmpeg", args...)
 
 	fmt.Printf("ffmpeg %s\n", strings.Join(args, " "))
@@ -27,6 +27,7 @@ func Ffmpeg(args ...string) {
 
 	if err != nil {
 		fmt.Printf("Failed ffmpeg %s: %v\n", strings.Join(args, " "), err)
-		os.Exit(-1)
 	}
+
+	return err
 }

@@ -64,7 +64,11 @@ func main() {
 			}
 		}
 		if(missing.IsEmpty()) {
-			dir := encoding.Encode(phraseEntries)
+			dir, err := encoding.Encode(phraseEntries)
+			if err != nil {
+				c.String(http.StatusInternalServerError, "Sorry, Morty messed up and Rick needs to fix this, please try again")
+			}
+			
 			fmt.Println(dir)
 			orig := filepath.Join(dir, "output.mp4")
 			fmt.Println(orig)

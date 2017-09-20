@@ -9,7 +9,7 @@ func init() {
 }
 
 // Crop takes file and start and length and sets to out file
-func Stitch(inputs []string, output string) {
+func Stitch(inputs []string, output string) error {
 	var stitchArgs []string
 
 	// add input files
@@ -37,5 +37,6 @@ func Stitch(inputs []string, output string) {
 	stitchArgs = append(stitchArgs, "-map", "[v]", "-map", "[a]")
 	stitchArgs = append(stitchArgs, "-strict", "-2", output);
 	
-	Ffmpeg(stitchArgs...)
+	err := Ffmpeg(stitchArgs...)
+	return err
 }

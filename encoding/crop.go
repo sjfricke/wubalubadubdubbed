@@ -15,9 +15,11 @@ func timeToString(t time.Time) string {
 }
 
 // Crop takes file and start and length and sets to out file
-func Crop(in string, out string, start time.Time, length time.Time) {
-	Ffmpeg("-ss", timeToString(start),
+func Crop(in string, out string, start time.Time, length time.Time) error {
+	err := Ffmpeg("-ss", timeToString(start),
 		"-i", in,
 		"-t", timeToString(length),
 		"-c:v", "libx264", "-strict", "experimental", out)
+
+	return err
 }
