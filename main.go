@@ -5,12 +5,12 @@ import (
 	"github.com/sjfricke/wubalubadubdub/encoding"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	// "time"
 	"github.com/fatih/set"
 	"fmt"
 	"strings"
 	"os/exec"
 	"path/filepath"
+	"log"
 )
 
 type PostData struct {
@@ -49,6 +49,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "The data key of the post body"})
 		}
 		text := string(json.Data)
+		log.Println("Phrase: ", text)
 		words := strings.Split(strings.ToLower(text), " ")
 		phraseEntries := make([]database.PhraseEntry, len(words))
 		missing := set.New()
@@ -69,17 +70,16 @@ func main() {
 				c.String(http.StatusInternalServerError, "Sorry, Morty messed up and Rick needs to fix this, please try again")
 			}
 			
-			fmt.Println(dir)
 			orig := filepath.Join(dir, "output.mp4")
-			fmt.Println(orig)
 			out := filepath.Join("public", strings.Join([]string{dir, "mp4"}, "."))
-			fmt.Println(out)
+			log.Println("New video at: ", out)
 			exec.Command("mv", orig, out).Run()
 			exec.Command("rm", "-r", dir).Run()
 			last.URL = fmt.Sprintf("http://wubalubadubdubbed.com/%s", out)
 			last.Phrase = text;
 			c.JSON(http.StatusOK, gin.H{"url": last.URL})
 		} else {
+			log.Println("Failed words: ", missing)
 			c.JSON(http.StatusBadRequest, gin.H{"missing": missing.List()})
 		}
 	})

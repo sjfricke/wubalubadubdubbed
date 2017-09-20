@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"log"
 	"strings"
-//	"time"
 	"fmt"
 
 	// Import postgres driver.
@@ -51,10 +50,7 @@ func ReadPhrase(db *sql.DB, phrases ...string) (PhraseEntry, int) {
 		}
 
 		// last items won't have chilren
-		if len(phrases) <= count {
-			log.Println("234324")
-			break
-		}
+		if len(phrases) <= count { break }
 
 		defer rows.Close()
 		for cRows.Next() {
@@ -71,22 +67,12 @@ func ReadPhrase(db *sql.DB, phrases ...string) (PhraseEntry, int) {
 
 				entry.Phrase = fmt.Sprintf("%s %s", entry.Phrase, cEntry.Phrase)
 				// last items wonx't have chilren
-				if len(phrases) <= count {
-					break
-				}
-			} else {
-				break
-			}
+				if len(phrases) <= count { break }
+			} else { break }
 		}
-
 
 		// will actaully never let a 3rd item in a row come now
-		if found == true {
-
-			log.Println("111")
-			break
-		}
-
+		if found == true { break }
 	}
 
 	err = rows.Err() // get encountered errors
