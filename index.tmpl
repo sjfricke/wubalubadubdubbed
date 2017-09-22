@@ -1,31 +1,39 @@
 <html>
-	<head>
-		<title>Wubalubadubdubbed</title>
-		<script
-			src="https://code.jquery.com/jquery-3.2.1.min.js"
-			integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-			crossorigin="anonymous"></script>
-		<script>
-		$(function() { //shorthand document.ready function
-			$('#login_form').on('submit', function(e) { //use on if jQuery 1.7+
-				e.preventDefault();  //prevent form from submitting
-				/* alert($("#wheep").val())*/
-				$.post( "/", JSON.stringify({data: $("#wheep").val()}), function ( res ){
-					location.reload()
-				}).fail(function (jqXHR) {
-					$("#bad").text("missing: " + $.parseJSON(jqXHR.responseText).missing.join(" "))
-				});
-			});
-		});
-		</script>
-	</head>
-	<body style="width:100%;height:.9vh; display:grid">
-		<form id="login_form" style="margin: auto"><input style="text-align: center" id="wheep" type="text" placeholder="Enter a phrase" /></form>
-		<p style="text-align: center; color: #f00" id="bad"></p>
-		<h1 style="text-align: center">{{.Phrase}}</h1>
-		<video width="75%" style="margin: 0 auto;" autoplay loop>
-			<source src="{{.URL}}" type="video/mp4">
-			Your browser does not support the video tag.
-		</video>
+  <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+    <link rel="manifest" href="/icon/manifest.json">
+    <link rel="mask-icon" href="/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/icon/favicon.ico">
+    <meta name="msapplication-config" content="/icon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <title>Wubalubadubdubbed</title>
+    <script
+       src="https://code.jquery.com/jquery-3.2.1.min.js"
+       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+       crossorigin="anonymous"></script>
+    <script>
+      $(function() { //shorthand document.ready function
+      $('#login_form').on('submit', function(e) { //use on if jQuery 1.7+
+      e.preventDefault();  //prevent form from submitting
+      /* alert($("#wheep").val())*/
+      $.post( "/", JSON.stringify({data: $("#wheep").val()}), function ( res ){
+      location.reload()
+      }).fail(function (jqXHR) {
+      $("#bad").text("missing: " + $.parseJSON(jqXHR.responseText).missing.join(" "))
+      });
+      });
+      });
+    </script>
+  </head>
+  <body style="width:100%;height:.9vh; display:grid">
+    <form id="login_form" style="margin: auto"><input style="text-align: center" id="wheep" type="text" placeholder="Enter a phrase" /></form>
+    <p style="text-align: center; color: #f00" id="bad"></p>
+    <h1 style="text-align: center">{{.Phrase}}</h1>
+    <video width="75%" style="margin: 0 auto;" autoplay loop>
+      <source src="{{.URL}}" type="video/mp4">
+	Your browser does not support the video tag.
+    </video>
   </body>
 </html>

@@ -63,4 +63,4 @@ flycheck_*.el
 # directory configuration
 .dir-locals.el
 
-/public/
+/public/15*.mp4
