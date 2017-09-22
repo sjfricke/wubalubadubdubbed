@@ -48,7 +48,7 @@ func main() {
 		if json.Data == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"BAD DATA": "The data key of the post body"})
 		}
-		text := string(json.Data)
+		text := strings.TrimSpace(string(json.Data))
 		log.Println("Phrase: ", text)
 		words := strings.Split(strings.ToLower(text), " ")
 		phraseEntries := make([]database.PhraseEntry, len(words))
