@@ -2,6 +2,10 @@
 
 This is a project to take 3 season of Rick and Morty and index all the words spoken in a database
 
+# UPDATE
+
+Due to the 500+ visitors in one month driving my electricty cost, I sadly have taken down the live demo. I do plan to update repo to allow anyone who has server space to host it instead.
+
 # How the wubalub gets a dubdubbed
 
 - First all episodes are ingested through IBM Watson to get the speech to text
